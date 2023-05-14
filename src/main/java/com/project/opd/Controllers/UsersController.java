@@ -19,7 +19,7 @@ public class UsersController {
     public void registration(@RequestBody RegistrationRequest reg) {
         usersService.registration(reg);
     }
-    @PostMapping("login")
+    @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest){
         return usersService.login(loginRequest);
     }

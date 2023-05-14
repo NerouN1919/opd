@@ -67,7 +67,7 @@ public class GroupsService {
     }
 
     @Transactional(readOnly = true)
-    public GroupsResponse getGroupByid(Long groupId) {
+    public GroupsResponse getGroupById(Long groupId) {
         Optional<Groups> optionalGroup = groupsCrudRepository.findById(groupId);
         if (optionalGroup.isEmpty()) {
             throw new Failed("Bad group id");

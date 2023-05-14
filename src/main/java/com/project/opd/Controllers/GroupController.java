@@ -5,12 +5,14 @@ import com.project.opd.Response.GroupsResponse;
 import com.project.opd.Response.UsersResponse;
 import com.project.opd.Services.GroupsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/groups")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class GroupController {
     @Autowired
     private GroupsService groupsService;
@@ -19,13 +21,12 @@ public class GroupController {
     public CreateGroupResponse createGroup(@PathVariable("adminId") Long adminId) {
         return groupsService.createGroup(adminId);
     }
-
     @GetMapping("/addUser/{groupId}/{userId}")
     public void addUserToGroup(@PathVariable("groupId") Long groupId, @PathVariable("userId") Long userId) {
         groupsService.addUserToGroup(groupId, userId);
     }
 
-    @GetMapping("/{groupId}")
+    @GetMapping("/getUsers/{groupId}")
     public List<UsersResponse> getAllUsersForGroup(@PathVariable("groupId") Long groupId) {
         return groupsService.getAllUsersForGroup(groupId);
     }
@@ -37,6 +38,6 @@ public class GroupController {
 
     @GetMapping("/{groupid}")
     public GroupsResponse getGroupByid(Long groupId) {
-        return groupsService.getGroupByid(groupId);
+        return groupsService.getGroupById(groupId);
     }
 }

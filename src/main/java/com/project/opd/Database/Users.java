@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -26,6 +28,9 @@ public class Users {
     private String login;
     @Column(name = "password_hash")
     private String passwordHash;
+    @OneToMany
+    @JoinColumn(name = "creator_id")
+    private Set<Projects> creatorInProjects;
     @ManyToMany
     @JoinTable(
             name = "user_group",
@@ -39,5 +44,12 @@ public class Users {
     public void removeGroup(Groups group){
         this.groups.remove(group);
         group.getUsers().remove(this);
+    }
+    public void setCreator(Projects projects){
+        if(this.creatorInProjects == null){
+            creatorInProjects = new HashSet<>();
+        }
+        this.creatorInProjects.add(projects);
+        projects.setCreator(this);
     }
 }

@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "groups")
@@ -28,6 +30,11 @@ public class Groups {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     private List<Users> users = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name="project_group",
+            joinColumns=  @JoinColumn(name="group_id", referencedColumnName="id"),
+            inverseJoinColumns= @JoinColumn(name="project_id", referencedColumnName="id") )
+    private Set<Projects> projects = new HashSet<>();
 
     public void addUser(Users user){
         this.users.add(user);
@@ -36,5 +43,9 @@ public class Groups {
     public void removeUser(Users user){
         this.users.remove(user);
         user.getGroups().remove(this);
+    }
+    public void addProject(Projects projects){
+        this.projects.add(projects);
+        projects.getGroups().add(this);
     }
 }
